@@ -1,0 +1,35 @@
+<% include ../partials/header %>
+
+<div class="container">
+	
+	<div class="row">
+		<div class="col-md-12">
+			<h2>Welcome to gscript</h2>
+			<p>Before you get started, we're going to need a few things from you.</p>
+		</div>
+	</div>
+
+	<div class="row welcome-form">
+		<div class="col-md-4">
+			<form action="/profile/update" method="post">
+				<div class="form-group spaced">
+					<label for="email">Email</label>
+					<input class="form-control" placeholder="me@example.com" type="email" name="email" id="email" required>
+					<span class="help-block">We request your email address to send you notifications</span>
+				</div>
+
+				<!--
+				<div class="checkbox spaced">
+					<label>
+						<input type="checkbox" name="terms" value="true" required>I have read and agree to the <a href="/legal/terms">Terms of use</a>
+					</label>
+				</div>
+				-->
+
+				<button type="submit" class="btn btn-primary spaced">Continue</button>
+			</form>
+		</div>
+	</div>
+</div>
+	
+<% include ../partials/footer %>

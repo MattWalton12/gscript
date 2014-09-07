@@ -1,0 +1,183 @@
+<% include partials/header %>
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-7">
+			<h3><%=job.title%></h3>
+			<h4><span class="label label-default">$<%=job.price%></span></h4>
+			
+			<div class="dates">
+				<p>Created <strong><%=moment(job.created).fromNow()%></strong></p>
+				<p>Due in <strong><%=moment(job.expires).fromNow()%></strong></p>
+
+				<% if (job.status != 1) { %>
+					<p><strong>In progress</strong> by <a href="/profile/<%=acceptee.id%>"><%-acceptee.steam.name%></a></p>
+				<% } %>
+			</div>
+		</div>
+
+		<div class="col-md-5">
+			<div class="profile">
+				<div class="profile-image">
+					<a href="/profile/<%=job.user.id%>"><img src="<%=job.user.steam.avatar%>" class="img-rounded"></a>
+				</div>
+
+				<div class="profile-text">
+					<h4>
+						<a href="/profile/<%=job.user.id%>"><%-job.user.steam.name%></a>
+
+						<% if (job.user.stats.feedback == 0) { %> 
+							<span class="label label-default label-rep"><%=job.user.stats.feedback%></span>
+
+						<% } else if (job.user.stats.feedback < 0) { %>
+							<span class="label label-warning label-rep"><%=job.user.stats.feedback%></span>
+
+						<% } else if (job.user.stats.feedback > 0) { %>
+							<span class="label label-success label-rep">+<%=job.user.stats.feedback%></span>
+						<% } %>
+					</h4>
+					<p><strong><%=job.user.stats.jobsHirer%></strong> completed jobs on record</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row job-body">
+		<div class="col-md-7">
+			<h4>Job description</h4>
+			<p class="description"><%=job.description%></p>
+
+			<div class="job-actions">
+				<% if (login) { %>
+					<% if (owned) { %>
+						<% if (job.status == 1) { %>
+						
+						<% } else { %>
+							<% if (job.status == 4) { %>
+								<a href="/jobs/markCompleted?id=<%=job.id%>" class="btn btn-success">Mark as completed</a>
+							<% } %>
+						<% } %>
+
+						<% if (!coderFeedback && job.status != 1) { %>
+							<a href="/jobs/leaveFeedback/<%=job.id%>" class="btn btn-default">Leave feedback</a>
+						<% } %>
+						
+						<% if (job.status < 4) { %>
+							<a href="/jobs/removeJob?id=<%=job.id%>" class="btn btn-danger" id="job-remove">Remove Job</a>
+						<% } %>
+
+					<% } else { %>
+						<% if (applied) { %>
+							<% if (job.status == 1) { %>
+								<a href="/jobs/removeApplication?id=<%=job.id%>" class="btn btn-danger">Withdraw application</a>
+							<% } else if (job.status == 2) {%>
+								<a href="/jobs/markFinished?id=<%=job.id%>" class="btn btn-success">Mark script as finished</a>
+							
+							<% } else if (!hirerFeedback && job.status >= 4) { %>
+								<a href="/jobs/leaveFeedback/<%=job.id%>" class="btn btn-default">Leave feedback</a>
+							<% } %>
+
+						<% } else if (job.status == 1) { %>
+							<a href="#" class="btn btn-primary" data-toggle="modal" data-target="#job-apply">Apply for job</a>
+						<% } %>
+					<% } %>
+
+				<% } else { %>
+					<a href="/auth/steam">Login to apply for job</a>
+				<% } %>
+			</div>
+
+			<% if (owned && job.status == 1) { %>
+				<div class="panel panel-primary applications">
+					<div class="panel-heading">
+						<h5>Applications</h5>
+					</div>
+
+					<div class="panel-body">
+						<% if (applications.length == 0) { %>
+							<p>None yet!</p>
+						<% } %>
+
+						<% for (i=0; i<applications.length; i++) { %>
+							<div class="application" data-id="<%=applications[i].user%>">
+								<div class="app-top">
+									<div class="app-profile">
+										<div class="image">
+											<img src="" class="img-rounded" alt="Profile image">
+										</div>
+										<div class="name"><a href="/profile/<%=applications[i].user%>" class="steam-name"><%=applications[i].user%></a> <span class="label label-default label-rep">0</span></div>
+									</div>
+
+									<div class="quote"><h4><span class="label label-default">$<%=applications[i].quote%></span></h4></div>
+								</div>
+
+								<div class="description">
+									<%=applications[i].comment%>
+								</div>
+
+								<div class="controls">
+									<a href="/jobs/acceptApplication?job=<%=job.id%>&application=<%=applications[i]._id%>" class="btn btn-primary">Accept application</a>
+								</div>
+							</div>
+						<% } %>
+					</div>
+				</div>
+			<% } %>
+		</div>
+
+		<div class="col-md-5">
+			<div class="list-group">
+				<a class="list-group-item <%=(job.status == 1 && "active" || "disabled")%>">Accepting applicants</a>
+				<a class="list-group-item <%=(job.status == 2 && "active" || "disabled")%>">In progress</a>
+				<a class="list-group-item <%=(job.status == 4 && "active" || "disabled")%>">Awaiting payment</a>
+				<a class="list-group-item <%=(job.status == 8 && "active" || "disabled")%>">Completed</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="job-apply" class="modal fade" tabindex="-2" role="dialog" aria-labelledby="addTitle" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form id="job-apply-form" action="/jobs/appy" method="POST" data-id="<%=job.id%>">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span>
+					</button>
+
+					<h4 class="modal-title" id="addTitle">Apply for job</h4>
+				</div>
+
+				<div class="modal-body">
+					<div id="job-apply-errors">
+
+					</div>
+
+					<div class="form-group">
+						<label for="job-apply-quote">Quote</label>
+						<div class="input-group">
+							<div class="input-group-addon">$</div>
+							<input type="currency" class="form-control" id="job-apply-quote" placeholder="<%=job.price%>" value="<%=job.price%>" required>
+						</div>
+						<span class="help-block">All prices are in USD</span>
+					</div>
+
+					<div class="form-group">
+						<label for="job-apply-comment">Comment</label>
+						<textarea id="job-apply-comment" required maxlength="500" class="form-control" rows="3" placeholder="You should explain why they should hire you."></textarea>
+					</div>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="submit" class="btn btn-primary" id="job-apply-submit" data-loading-text="Processing...">Apply for job</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+<script type="text/javascript" src="/static/js/job.js"></script>
+
+<% include partials/footer %>
+

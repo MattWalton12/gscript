@@ -1,0 +1,99 @@
+<% include ../partials/header %>
+
+<div class="container profile-page">
+	<% if (login && user.id == profile.id && !user.imported) { %>
+		<div class="panel panel-primary">
+			<div class="panel-body">You can import your feedback and reputation from your <strong>CoderHire</strong> profile in your <a href="/profile/edit">Profile settings</a>.</div>
+		</div>
+	<% } %>
+
+	<div class="row">
+		<div class="col-md-8">
+			<div class="clearfix">
+				<div class="profile-image">
+					<img src="<%=profile.steam.avatar%>" class="img-rounded">
+				</div>
+
+				<div class="profile-text">
+					<h2>
+						<%-profile.steam.name%>
+						
+						<% if (profile.stats.feedback == 0) { %> 
+							<span class="label label-default label-rep"><%=profile.stats.feedback%></span>
+
+						<% } else if (profile.stats.feedback < 0) { %>
+							<span class="label label-danger label-rep"><%=profile.stats.feedback%></span>
+
+						<% } else if (profile.stats.feedback > 0) { %>
+							<span class="label label-success label-rep">+<%=profile.stats.feedback%></span>
+						<% } %>
+					</h2>
+				</div>
+			</div>
+
+			<div class="description">
+				<p><%=profile.description || "No description"%></p>
+			</div>
+		</div>
+
+		<div class="col-md-4">
+			<div class="panel panel-info">
+				<div class="panel-heading">User statistics</div>
+				<div class="panel-body">
+					<ul class="list-unstyled">
+						<li>Date Joined: <strong><%=profile.join.toFormat("MMMM DD YYYY")%></strong></li>
+						<li>Jobs completed: <strong><%=profile.stats.jobsHirer%> (Hirer) <%=profile.stats.jobsCoder%> (Coder)</strong></li>
+					</ul>
+				</div>
+			</div>
+			<a href="http://steamcommunity.com/profiles/<%=profile.steam.id%>" class="btn btn-default">Steam Profile</a>
+
+			<% if (login && user.id == profile.id) { %>
+				<a href="/profile/edit" class="btn btn-primary">Edit profile</a>
+			<% } %>
+		</div>
+
+	</div>
+
+	<div class="row">
+		<div class="col-md-8">
+			<h4>Feedback</h4>
+
+			<div id="profile-feedback" data-id="<%=profile.id%>">
+				<% if (feedback.length == 0) { %>
+					<div class="alert alert-info">No feedback yet</div>
+				<% } %>
+
+				<% for (i=0; i<feedback.length; i++) { %>
+					<div class="panel panel-<%=(feedback[i].rating == -1 && "danger" || feedback[i].rating == 0 && "default" || feedback[i].rating == 1 && "success")%> feedback">
+						<% if (feedback[i].imported) { %>
+							<div class="panel-body">
+								<% if (feedback[i].reviewer) { %>
+									<a href="/profile/<%=feedback[i].reviewer.id%>"><img src="<%=feedback[i].reviewer.steam.avatar%>" class="avatar"></a>
+								<% } %>
+								<%=feedback[i].text || "No message left"%>
+								<span class="job-info">(<%=feedback[i].state%> for CoderHire job)</span>
+							</div>
+						
+						<% } else { %>
+							<div class="panel-body">
+								<a href="/profile/<%=feedback[i].reviewer.id%>"><img src="<%=feedback[i].reviewer.steam.avatar%>" class="avatar"></a>
+								<%=feedback[i].text%> <span class="job-info">(<%=feedback[i].state%> for <a href="/job/<%=feedback[i].job.id%>">Job #<%=feedback[i].job.id%></a> on <%=feedback[i].date.toFormat("DD/MM/YYYY")%>)</span>
+							</div>
+						<% } %>
+					</div>
+				<% } %>
+
+				<ul class="pagination">
+					<li><a href="?page=<%=Math.max(page -1, 1)%>">&laquo;</a></li>
+					<% for (i=1; i<=Math.ceil(count / 25); i++) { %>
+						<li class="<%=(page == i && "active" || "")%>"><a href="?page=<%=i%>"><%=i%></a></li>
+					<% } %>
+					<li><a href="?page=<%=Math.min(page + 1, Math.ceil(count / 25))%>">&raquo;</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+<% include ../partials/footer %>

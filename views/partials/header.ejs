@@ -1,0 +1,70 @@
+<% title = title || "" %>
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>gscript | <%=title%></title>
+
+		<link rel="stylesheet" type="text/css" href="/static/css/application.css">
+		<link rel="stylesheet" type="text/css" href="/static/css/bootstrap-datetimepicker.min.css">
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<script type="text/javascript" src="/static/js/vendor/bootstrap.min.js"></script>
+		<script type="text/javascript" src="/static/js/vendor/jquery.linkify.min.js"></script>
+		<script type="text/javascript" src="/static/js/vendor/validator.min.js"></script>
+		<script type="text/javascript" src="/static/js/vendor/moment.min.js"></script>
+		<script type="text/javascript" src="/static/js/global.js"></script>
+	</head>
+
+	<body>
+		<div class="navbar navbar-default navbar-fixed-top">
+			<div class="container">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+
+				<div class="navbar-header">
+					<a href="/" class="navbar-brand">gscript</a>
+				</div>
+
+				<div class="navbar-collapse collapse">
+					<ul class="nav navbar-nav">
+						<li class="active">
+							<a href="/jobs">Jobs</a>
+						</li>
+					</ul>
+
+					<ul class="nav navbar-nav navbar-right">
+					<% if (login) { %>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+								<%=user.steam.name%> <span class="badge"><%=notify.count%></span>
+								<span class="caret"></span>
+							</a>
+
+							<ul class="dropdown-menu">
+								<li><a href="/profile/notifications">View notifications <span class="badge"><%=notify.count%></span></a></li>
+								<li><a href="/profile">View profile</a></li>
+								<li><a href="/profile/edit">Edit profile</a></li>
+								<li class="divider"></li>
+								<li><a href="/auth/logout">Logout</a></li>
+							</ul>
+						</li>
+					<% } else { %>
+
+						<li>
+							<a href="/auth/steam" style="padding-top:13.5px; padding-bottom:13.5px;"><img src="/static/img/loginwithsteam.png" alt="Login with steam"></a>
+						</li>
+
+					<% } %>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<% include messages %>
+

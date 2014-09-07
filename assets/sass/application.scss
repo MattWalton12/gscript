@@ -1,0 +1,211 @@
+@import "vendor/bootstrap";
+@import "modules/colors";
+
+body {
+	padding-top:60px;
+}
+
+.steamlogin {
+	padding-top:13.5px;
+	padding-bottom:13.5px;
+}
+
+.row .job {
+	background-color: $gray-lighter;
+	padding:15px;
+	margin-bottom:10px;
+	margin-right:10px;
+	border:1px solid #e7e7e7;
+}
+
+.profile {
+	background-color:$gray-lighter;
+	padding:15px;
+	overflow:auto;
+	border:1px solid #e7e7e7;
+}
+
+.profile-image {
+	display:block;
+	float:left;
+}
+
+.profile-text {
+	display:block;
+	float:left;
+	margin-left:10px;
+
+	h4 {
+		margin-bottom:5px;
+	}
+
+	p {
+		margin-top:5px;
+	}
+}
+
+.reset-margin {
+	margin:0;
+}
+
+.dates {
+	margin-top:20px;
+	p {
+		margin:0;
+	}
+}
+
+.label-rep {
+	font-size:0.6em;
+	vertical-align: super;
+	margin-left:3px;
+}
+
+footer {
+	margin-bottom:30px;
+	margin-top:35px;
+	border-top:1px solid $gray-lighter;
+	padding-top:15px;
+
+	.col-md-6.trello {
+		text-align:right;
+	}
+}
+
+.job-container, .job-actions {
+	margin-top:20px;
+}
+
+.job-body {
+	margin-top:30px;
+	margin-bottom:30px;
+}
+
+.spaced {
+	margin-top:20px;
+	margin-bottom:20px;
+}
+
+.dropdown a img {
+	width:19px;
+	height:19px;
+}
+
+.login {
+	margin-top:30px;
+	margin-bottom:30px;
+	text-align:center;
+}
+
+.profile-page {
+	margin-top:30px;
+
+	.description {
+		margin-top:20px;
+	}
+
+	.feedback {
+		.avatar {
+			width:32px;
+			height:32px;
+
+			margin-right:10px;
+		}
+
+		.job-info {
+			color:$gray-light;
+			font-style:italic;
+		}
+	}
+}
+
+.applications {
+	margin-top:20px;
+
+	.application {
+		background-color: $gray-lighter;
+		padding:15px;
+		margin-bottom:10px;
+		margin-right:10px;
+		border:1px solid #e7e7e7;
+		overflow:auto;
+		//display:none;
+
+		.app-top {
+			display:block;
+			overflow:auto;
+		}
+
+
+		.app-profile {
+			overflow:auto;
+			display:block;
+			float:left;
+
+			.image {
+				display:block;
+				float:left;
+
+				img {
+					height:32px;
+					width:32px;
+				}
+			}
+
+			.name {
+				display:block;
+				float:left;
+				font-size:1.2em;
+				line-height:32px;
+				padding-left:5px;
+			}
+		}
+
+		.quote {
+			display:block;
+			float:right;
+
+			h4 {
+				padding:0;
+				margin:0;
+			}
+		}
+
+		.description {
+			padding:15px 0 15px 0;
+		}
+	}
+}
+
+.notifications .notification {
+	background-color: $gray-lighter;
+	padding:15px;
+	margin-bottom:10px;
+	margin-right:10px;
+	border:1px solid #e7e7e7;
+
+	.date {
+		color:$gray-light;
+		padding-right:5px;
+	}
+
+	&.read {
+		background-color:lighten($gray-lighter, 30%);
+	}
+}
+
+.index {
+	margin-top:20px;
+}
+
+.job-new {
+	margin:15px 0 15px 0;
+}
+
+.userJobs {
+	margin:15px 0 15px 0;
+}
+
+.ch-import {
+	margin-top:30px;
+}

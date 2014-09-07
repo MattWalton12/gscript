@@ -1,0 +1,42 @@
+<% include ../partials/header %>
+<div class="container profile-edit">
+	<h3>Edit your profile</h3>
+
+	<form action="/profile/update" method="POST">
+		<div class="row">
+			<div class="col-md-5">
+				<div class="form-group">
+					<label for="profile-email">Email address</label>
+					<input type="email" class="form-control" name="email" id="profile-email" value="<%=user.email%>">
+				</div>
+
+				<div class="form-group">
+					<label for="profile-description">Description</label>
+					<textarea type="email" class="form-control" name="description" id="profile-description" rows="4" maxlength="500"><%=(user.description || "")%></textarea>
+					<span class="help-block">This description will show up on your profile</span>
+				</div>
+
+				<button type="submit" class="btn btn-primary">Save</button>
+			</div>
+		</div>
+
+		<% if (!user.imported) { %>
+			<div class="row ch-import">
+				<div class="col-md-6">
+					<div class="panel panel-info">
+						<div class="panel-heading">
+							<h5>CoderHire import</h5>
+						</div>
+
+						<div class="panel-body">
+							<button id="profile-import" class="btn btn-info" data-loading-text="Processing...">Import reputation from CoderHire</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		<% } %>
+	</form>
+
+	<script type="text/javascript" src="/static/js/profile.js"></script>
+</div>
+<% include ../partials/footer %>

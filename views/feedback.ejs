@@ -1,0 +1,28 @@
+<% include partials/header %>
+<div class="container">
+	<h3>Leave feedback for Job #<%=id%></h3>
+
+	<div class="row">
+		<div class="col-md-5">
+			<form id="feedback-form" action="/jobs/leaveFeedback" method="post">
+				<input type="hidden" name="id" id="feedback-id" value="<%=id%>">
+				<div class="form-group">
+					<label for="feedback-score">How would you rate your experience</label>
+					<select class="form-control" name="rating">
+						<option value="1">Positive (+1)</option>
+						<option value="0">Neutral (0)</option>
+						<option value="-1">Negative (-1)</option>
+					</select>
+				</div>
+
+				<div class="form-group">
+					<label for="feedback-comment">Leave a comment</label>
+					<textarea name="comment" class="form-control" maxlength="200" rows="4" id="feedback-comment"></textarea>
+				</div>
+
+				<button class="btn btn-primary" type="submit">Leave feedback</button>
+			</form>
+		</div>
+	</div>
+</div>
+<% include partials/footer %>
